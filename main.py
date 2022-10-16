@@ -3,8 +3,13 @@ from database import engine, Base , get_db
 from Flats_fun import create_details,get_all_Flatdetails,get_detail_byID, update_detail_by_id,delete_detail_by_id
 from typing import List
 from sqlalchemy.orm import Session
+from Users_fun import create_new_user
+from fastapi.security import OAuth2PasswordRequestForm,OAuth2PasswordBearer
+from schemas import Flat_create, show_flat , ShowUser , UserCreate
+from login_fun import authenticate_user , create_access_token
+from schemas import Token
+from datetime import timedelta
 
-from schemas import Flat_create, show_flat
 app = FastAPI()
 Base.metadata.create_all(engine)
 @app.get("/")
@@ -39,3 +44,23 @@ def delete_job(id: int,db: Session = Depends(get_db)):
     delete_detail_by_id(id=id,db=db)
     
     return {"msg":"Successfully deleted."}
+
+@app.post("/",response_model = ShowUser)
+def create_user(user : UserCreate,db: Session = Depends(get_db)):
+    user = create_new_user(user=user,db=db)
+    return user 
+
+
+@app.post("/token", response_model=Token)
+def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(),db: Session= Depends(get_db)):
+    user = authenticate_user(form_data.username, form_data.password,db)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect username or password",
+        )
+    access_token_expires = timedelta(minutes=30)
+    access_token = create_access_token(
+        data={"sub": user.email}, expires_delta=access_token_expires
+    )
+    return {"access_token": access_token, "token_type": "bearer"}

@@ -1,3 +1,5 @@
 uvicorn
 fastapi[all]
 sqlalchemy[all]
+passlib[bcrypt]
+psycopg2-binary
