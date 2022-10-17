@@ -41,13 +41,6 @@ def delete_detail_by_id(id: int,db: Session):
     else:
         db.delete(ref)
     db.commit()
-    
-
-def check_status_by_id(id:int, db: Session):
-    ref = db.query(Flats).get(id)
-    if not ref:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"Flat with id {id} not found")
 
 
 def update_status_by_id(id:int, db: Session):
@@ -60,9 +53,17 @@ def update_status_by_id(id:int, db: Session):
 
     db.commit()
 
+
 def check_status(id:int,db:Session):
     ref = db.query(Flats).get(id)
     if ref.status != "rented":
         return True
     else:
         return False
+
+# def change_status(id:int,db:Session):
+#     ref = db.query(Flats).get(id)
+#     Flatsref.status = "empty"
+#     db.add(ref)
+#     db.commit()
+#     db.refresh(ref)

@@ -1,5 +1,4 @@
 from fastapi import FastAPI,  status,Depends , HTTPException
-# from Tenant_fun import get_all_Tenants
 from database import engine, Base , get_db
 from Flats_fun import create_details,get_all_Flatdetails,get_detail_byID, update_detail_by_id,delete_detail_by_id,update_status_by_id
 from typing import List
@@ -8,8 +7,7 @@ from Users_fun import create_new_user
 from fastapi.security import OAuth2PasswordRequestForm,OAuth2PasswordBearer
 from schemas import Flat_create, flat_assigned, show_flat , ShowUser , UserCreate, flat_assign
 from login_fun import authenticate_user , create_access_token
-# from Tenant_fun import new_tenant, get_all_Tenants, get_tenant_byID,update_tenant_by_id,delete_tenant_by_id 
-from FlatAssignment_fun import flatassign, flat_assign_details, get_details_byID 
+from FlatAssignment_fun import flatassign, flat_assign_details, get_details_byID
 from schemas import Token
 from datetime import timedelta
 
@@ -71,7 +69,7 @@ def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(),db: 
 
 
 
-@app.get("/flatassign",response_model=List[flat_assigned])
+@app.get("/flatassign",response_model=List[flat_assigned],status_code=status.HTTP_200_OK)
 def flatassign_details(db:Session = Depends(get_db)):
     details = flat_assign_details(db=db)
     return details
@@ -82,11 +80,17 @@ def flatassign_details(detail: flat_assign,db: Session = Depends(get_db)):
     return details
 
 
-
-@app.get("/flatassign/{id}",response_model=flat_assigned)
+@app.get("/flatassign/{id}",response_model=flat_assigned,status_code=status.HTTP_200_OK)
 def flatassign_detail(id:int,db:Session = Depends(get_db)):
     detail = get_details_byID(id=id,db=db)
     if not detail:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"Details with this id {id} does not exist")
     return detail
 
+
+
+# @app.delete("/flatassign/{id}") 
+# def delete_assignment(id: int,db: Session = Depends(get_db)):
+#     delete_assignment_by_id(id=id,db=db)
+    
+#     return {"msg":"Successfully deleted."}

@@ -2,7 +2,7 @@ from schemas import flat_assign, flat_assigned
 from sqlalchemy.orm import Session
 from models import FlatAssignment, Flats
 from fastapi import HTTPException,status
-from Flats_fun import update_status_by_id, check_status, check_status_by_id
+from Flats_fun import update_status_by_id, check_status
 
 
 def flatassign(obj: flat_assign,db: Session ):
@@ -13,7 +13,7 @@ def flatassign(obj: flat_assign,db: Session ):
         db.commit()
         db.refresh(flat)
         return flat
-    else : raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"Already rented")
+    else : raise HTTPException(status_code=status.HTTP_202_ACCEPTED, detail=f"Already rented")
 
 def flat_assign_details(db:Session):
     flats=db.query(FlatAssignment).all()
@@ -22,4 +22,15 @@ def flat_assign_details(db:Session):
 def get_details_byID(id:int , db:Session):
     flat=db.query(FlatAssignment).get(id)
     return flat
+
+
+# def delete_assignment_by_id(id: int,db: Session):
+#     ref = db.query(FlatAssignment).get(id)
+#     if not ref:
+#         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+#                             detail=f"Flat with id {id} not found")
+#     else:
+#         change_status(id, db)
+#         db.delete(ref)
+#     db.commit()
 
