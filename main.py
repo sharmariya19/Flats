@@ -6,10 +6,10 @@ from typing import List
 from sqlalchemy.orm import Session
 from Users_fun import create_new_user
 from fastapi.security import OAuth2PasswordRequestForm,OAuth2PasswordBearer
-from schemas import Flat_create, flat_assigned, show_flat , ShowUser , UserCreate, tenant,show_tenant
+from schemas import Flat_create, flat_assigned, show_flat , ShowUser , UserCreate, tenant,show_tenant,flat_assign
 from login_fun import authenticate_user , create_access_token
 from Tenant_fun import new_tenant, get_all_Tenants, get_tenant_byID,update_tenant_by_id,delete_tenant_by_id 
-from FlatAssignment_fun import flat_assign, flat_assign_details, get_details_byID 
+from FlatAssignment_fun import flatassign, flat_assign_details, get_details_byID 
 from schemas import Token
 from datetime import timedelta
 
@@ -77,7 +77,7 @@ def all_tenants(db:Session = Depends(get_db)):
 
 @app.post("/tenant/",response_model=show_tenant, status_code=status.HTTP_201_CREATED)
 def tenant_details(detail: tenant,db: Session = Depends(get_db)):
-    tenant = new_tenant(obj=detail,db=db)
+    tenant = newtenant(obj=detail,db=db)
     return tenant
 
 @app.get("/tenant/{id}",response_model=show_tenant)
@@ -105,13 +105,13 @@ def flatassign_details(db:Session = Depends(get_db)):
     details = flat_assign_details(db=db)
     return details
 
-@app.post("/flatassign/",response_model=flat_assigned, status_code=status.HTTP_201_CREATED)
+@app.post("/flatassign",response_model=flat_assigned, status_code=status.HTTP_201_CREATED)
 def flatassign_details(detail: flat_assign,db: Session = Depends(get_db)):
-    details = flat_assign(obj=detail,db=db)
+    details = flatassign(obj=detail,db=db)
     return details
 
 @app.get("/flatassign/{id}",response_model=flat_assigned)
-def flatassign(id:int,db:Session = Depends(get_db)):
+def flatassign_detail(id:int,db:Session = Depends(get_db)):
     detail = get_details_byID(id=id,db=db)
     if not detail:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"Details with this id {id} does not exist")

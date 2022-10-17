@@ -37,8 +37,8 @@ class FlatAssignment(Base):
     __tablename__ = "flat_assignment"
 
     id = Column(Integer,primary_key=True,index=True)
-    flat_id = Column(Integer,ForeignKey(Flats.id))
-    tenant_id = Column(Integer,ForeignKey(Tenants.id))
+    flat_id = Column(Integer)
+    tenant_id = Column(Integer)
     rent = Column(Integer)
     lease_time = Column(Integer)
     # tenant_name = Column(Integer,ForeignKey("tenants.tenant_name"))

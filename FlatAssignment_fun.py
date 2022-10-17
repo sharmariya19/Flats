@@ -16,6 +16,6 @@ def flat_assign_details(db:Session):
     return flats
 
 def get_details_byID(id:int , db:Session):
-    flats=db.query(FlatAssignment).get(id)
-    return flats
+    flat=db.query(FlatAssignment).get(id)
+    return flat
 

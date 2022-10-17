@@ -1,4 +1,4 @@
-from unicodedata import name
+
 from schemas import tenant
 from sqlalchemy.orm import Session
 from models import Tenants
