@@ -48,7 +48,7 @@ class flat_assign(BaseModel):
     user_id:int
     rent:int
     lease_time:int
-
+#date
 class flat_assigned(flat_assign):
     id:int
     class Config():

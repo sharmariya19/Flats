@@ -22,17 +22,7 @@ class User(Base):
     hashed_password = Column(String,nullable=False)
     is_superuser = Column(Boolean(),default=False)
 
- 
-# class Tenants(Base):
-#     __tablename__ = "tenants"
 
-#     id = Column(Integer,primary_key=True,index=True)
-#     tenant_name = Column(String,nullable=False)
-#     company_name = Column(String,nullable=False)
-#     contact = Column(String,nullable=False)
-#     address = Column(String,nullable=False)
-
-    # flats = relationship(Tenants, back_populates="tenants")
 
 class FlatAssignment(Base):
     __tablename__ = "flat_assignment"
@@ -42,13 +32,9 @@ class FlatAssignment(Base):
     user_id = Column(Integer,ForeignKey("users.id"))
     rent = Column(Integer)
     lease_time = Column(Integer)
-    # tenant_name = Column(Integer,ForeignKey("tenants.tenant_name"))
-
   
     
     # flats = relationship("Flats")
-    # tenants = relationship("Tenants")
-    # tenants = relationship(Tenants, back_populates="flats")
-    
+    # users = relationship("User")    
 
 

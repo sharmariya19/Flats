@@ -80,9 +80,8 @@ def flatassign_details(db:Session = Depends(get_db)):
 def flatassign_details(detail: flat_assign,db: Session = Depends(get_db)):
     details = flatassign(obj=detail,db=db)
     return details
-def update_status_by_id(id: int, db: Session = Depends(get_db)):
-    update_detail_by_id(id=id,db=db)
-    return "done"
+
+
 
 @app.get("/flatassign/{id}",response_model=flat_assigned)
 def flatassign_detail(id:int,db:Session = Depends(get_db)):
