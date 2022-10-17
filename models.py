@@ -23,25 +23,29 @@ class User(Base):
     is_superuser = Column(Boolean(),default=False)
 
  
-class Tenants(Base):
-    __tablename__ = "tenants"
+# class Tenants(Base):
+#     __tablename__ = "tenants"
 
-    id = Column(Integer,primary_key=True,index=True)
-    tenant_name = Column(String,nullable=False)
-    company_name = Column(String,nullable=False)
-    contact = Column(String,nullable=False)
-    address = Column(String,nullable=False)
+#     id = Column(Integer,primary_key=True,index=True)
+#     tenant_name = Column(String,nullable=False)
+#     company_name = Column(String,nullable=False)
+#     contact = Column(String,nullable=False)
+#     address = Column(String,nullable=False)
+
     # flats = relationship(Tenants, back_populates="tenants")
 
 class FlatAssignment(Base):
     __tablename__ = "flat_assignment"
 
     id = Column(Integer,primary_key=True,index=True)
-    flat_id = Column(Integer)
-    tenant_id = Column(Integer)
+    flat_id = Column(Integer,ForeignKey("flats.id"))
+    user_id = Column(Integer,ForeignKey("users.id"))
     rent = Column(Integer)
     lease_time = Column(Integer)
     # tenant_name = Column(Integer,ForeignKey("tenants.tenant_name"))
+
+  
+    
     # flats = relationship("Flats")
     # tenants = relationship("Tenants")
     # tenants = relationship(Tenants, back_populates="flats")

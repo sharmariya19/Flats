@@ -43,29 +43,13 @@ class Token(BaseModel):
     token_type: str
 
 
-class tenant(BaseModel):
-    tenant_name:str
-    company_name:str
-    contact: str
-    address: str
-
-class show_tenant(tenant):
-    id:int
-    class Config():
-        orm_mode = True
-
-
 class flat_assign(BaseModel):
     flat_id:int
-    tenant_id:int
+    user_id:int
     rent:int
     lease_time:int
 
 class flat_assigned(flat_assign):
     id:int
-    # id:int
-    # flat_id:int
-    # tenant_name: tenant.name
-    # lease_time:int
     class Config():
         orm_mode=True
