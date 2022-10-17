@@ -1,5 +1,6 @@
 from database import Base
 from sqlalchemy import Column,Integer,Float, String,Boolean, ForeignKey
+from sqlalchemy.orm import relationship
 
 class Flats(Base):
     __tablename__ = "flats"
@@ -20,4 +21,30 @@ class User(Base):
     email = Column(String,nullable=False,unique=True,index=True)
     hashed_password = Column(String,nullable=False)
     is_superuser = Column(Boolean(),default=False)
+
+ 
+class Tenants(Base):
+    __tablename__ = "tenants"
+
+    id = Column(Integer,primary_key=True,index=True)
+    tenant_name = Column(String,nullable=False)
+    company_name = Column(String,nullable=False)
+    contact = Column(String,nullable=False)
+    address = Column(String,nullable=False)
+    # flats = relationship(Tenants, back_populates="tenants")
+
+class FlatAssignment(Base):
+    __tablename__ = "flat_assignment"
+
+    id = Column(Integer,primary_key=True,index=True)
+    flat_id = Column(Integer,ForeignKey(Flats.id))
+    tenant_id = Column(Integer,ForeignKey(Tenants.id))
+    rent = Column(Integer)
+    lease_time = Column(Integer)
+    # tenant_name = Column(Integer,ForeignKey("tenants.tenant_name"))
+    # flats = relationship("Flats")
+    # tenants = relationship("Tenants")
+    # tenants = relationship(Tenants, back_populates="flats")
     
+
+

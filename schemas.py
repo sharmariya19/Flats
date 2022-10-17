@@ -41,3 +41,34 @@ class ShowUser(BaseModel):   #new
 class Token(BaseModel):
     access_token: str
     token_type: str
+
+class tenant_name(BaseModel):
+    tenantname:str
+
+class tenant(tenant_name):
+    company_name:str
+    contact: str
+    address: str
+
+class show_tenant(tenant):
+    id:int
+    class Config():
+        orm_mode = True
+
+
+class flat_assign(BaseModel):
+    flat_id:int
+    tenant_id:int
+    rent:int
+    lease_time:int
+    class Config():
+        orm_mode=True
+
+
+class flat_assigned(tenant_name):
+    assignment_id:int
+    flat_id:int
+    # tenant_name: tenant.__name__
+    lease_time:int
+    class Config():
+        orm_mode:True
