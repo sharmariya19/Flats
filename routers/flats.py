@@ -4,6 +4,8 @@ from sqlalchemy.orm import Session
 from typing import List
 from schemas.flat import show_flat, Flat_create
 from crud_func.Flats_fun import create_details,get_all_Flatdetails, get_detail_byID, delete_detail_by_id, update_detail_by_id
+from routers.login import oauth2_scheme
+from jose import jwt
 
 router = APIRouter()
 
@@ -14,7 +16,7 @@ def read_all_flats(db:Session = Depends(get_db)):
     return ref
 
 @router.post("/flats", tags=['flat'], response_model=show_flat, status_code=status.HTTP_201_CREATED)
-def create_flat(detail: Flat_create,db: Session = Depends(get_db)):
+def create_flat(detail: Flat_create,db: Session = Depends(get_db), token : str=Depends(oauth2_scheme)):
     ref = create_details(obj=detail,db=db)
     return ref
 
@@ -26,13 +28,13 @@ def read_flat(id:int,db:Session = Depends(get_db)):
     return ref
 
 @router.put("/flats/{id}", tags=['flat'], status_code=status.HTTP_200_OK)   
-def update_flat(id: int,ref: Flat_create,db: Session = Depends(get_db)):
+def update_flat(id: int,ref: Flat_create,db: Session = Depends(get_db), token : str=Depends(oauth2_scheme)):
     update_detail_by_id(id=id,obj=ref,db=db)
     
     return {"msg":"Successfully updated data."}
 
 @router.delete("/flats/{id}",  tags=['flat'], status_code=status.HTTP_200_OK) 
-def delete_job(id: int,db: Session = Depends(get_db)):
+def delete_job(id: int,db: Session = Depends(get_db), token : str=Depends(oauth2_scheme)):
     delete_detail_by_id(id=id,db=db)
     
     return {"msg":"Successfully deleted."}
